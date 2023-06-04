@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 31-05-2023 a las 03:16:41
+-- Tiempo de generación: 04-06-2023 a las 04:56:10
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 8.2.0
 
@@ -43,9 +43,19 @@ CREATE TABLE `cliente` (
 
 CREATE TABLE `tipo` (
   `id` int(11) NOT NULL,
-  `descripcion` varchar(255) NOT NULL,
+  `descripcion` varchar(100) NOT NULL,
   `costo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `tipo`
+--
+
+INSERT INTO `tipo` (`id`, `descripcion`, `costo`) VALUES
+(1, 'Pieza Simple', 25000),
+(2, 'Pieza Doble', 90000),
+(3, 'Duplex', 200000),
+(4, 'Presidencial', 1250000);
 
 --
 -- Índices para tablas volcadas
@@ -78,7 +88,7 @@ ALTER TABLE `cliente`
 -- AUTO_INCREMENT de la tabla `tipo`
 --
 ALTER TABLE `tipo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Restricciones para tablas volcadas
