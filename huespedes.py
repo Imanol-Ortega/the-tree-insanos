@@ -41,13 +41,14 @@ def ventana_huespedes(menu):
             tipo = item_selected2(True)
             dias = int(cajaDias.get())
             tipoPago = int(radio_var.get())
-            mycursor.execute("SELECT id FROM cliente")
+            mycursor.execute("SELECT id,NuHabitacion FROM cliente")
             id = mycursor.fetchall()
             for ids in id:
                 if Numero in ids:
-                    mycursor.execute("UPDATE cliente SET Estado =%s WHERE id = %s",
+                    mycursor.execute("UPDATE cliente SET Estado =%s WHERE id = %s AND Estado = 1",
                                      (2, ids[0]))
                     mydb.commit()
+
             if tipoPago == 1:
                 if dias > 5:
                     descuento = 0.05
@@ -55,7 +56,6 @@ def ventana_huespedes(menu):
                 descuento = 0.1
             if dias > 10:
                 descuento = descuento + 0.02
-            print(tipo[0])
             subtotal = dias*int(tipo[1])
             total = subtotal - (subtotal*descuento)
             mycursor.execute("INSERT INTO cliente (NuHabitacion,Tipo,Costo,Dias,SubTotal,Descuento,Total,Estado) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
@@ -92,8 +92,13 @@ def ventana_huespedes(menu):
     def modificar():
         try:
             if item_selected1(True)[0]:
-                mycursor.execute("UPDATE cliente SET Dias = %s WHERE id = %s",
-                                 (int(cajaDias.get()), item_selected1(True)[0]))
+                mycursor.execute("SELECT Costo,Descuento FROM cliente WHERE id = %s", [
+                                 item_selected1(True)[0]])
+                datos = mycursor.fetchall()
+                subtotal = int(cajaDias.get())*int(datos[0][0])
+                total = subtotal - (subtotal*(int(datos[0][1])/100))
+                mycursor.execute("UPDATE cliente SET Dias = %s,Subtotal = %s,Total = %s WHERE id = %s",
+                                 (int(cajaDias.get()), subtotal, int(total), item_selected1(True)[0]))
                 mydb.commit()
                 for i in tree.get_children():
                     tree.delete(i)
