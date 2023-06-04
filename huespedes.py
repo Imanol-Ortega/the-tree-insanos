@@ -5,8 +5,11 @@ from tkinter import messagebox
 import customtkinter
 import mysql.connector
 
+def retornar_Menu(huespedes, menu):
+    huespedes.withdraw()
+    menu.deiconify()
 
-def ventana_huespedes():
+def ventana_huespedes(menu):
     root_tk = tk.Toplevel()
     root_tk.geometry("1200x500")
     root_tk.title("Huespedes")
@@ -154,7 +157,7 @@ def ventana_huespedes():
     buttonModificar = customtkinter.CTkButton(
         master=root_tk, corner_radius=10, text="Modificar", command=modificar)
     buttonSalir = customtkinter.CTkButton(
-        master=root_tk, corner_radius=10, text="Atras", command=root_tk.destroy)
+        master=root_tk, corner_radius=10, text="Atras", command=lambda: retornar_Menu(root_tk, menu))
     buttonLimpiar.grid(column=0, row=6, padx=5, pady=5)
     buttonGuardar.grid(column=1, row=6, padx=5, pady=5)
     buttonBorrar.grid(column=0, row=7, padx=5, pady=5)

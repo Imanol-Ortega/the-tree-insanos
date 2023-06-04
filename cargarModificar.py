@@ -5,8 +5,8 @@ import mysql.connector
 
 
 def retornar_Menu(cargarModificar, menu):
-    cargarModificar.withdraw()  # Ocultar la ventana actual
-    menu.deiconify()  # Mostrar la ventana anterior
+    cargarModificar.withdraw()
+    menu.deiconify()
 
 
 def ventana_Carga_Modificacion(menu):
@@ -28,7 +28,7 @@ def ventana_Carga_Modificacion(menu):
         mensaje_error.pack(padx=20, pady=20)
         # ? Botón de cerrar
         boton_cerrar = ttk.Button(
-            ventana_error, text="Cerrar", command=ventana_error.destroy)
+            ventana_error, text="Aceptar", command=ventana_error.destroy)
         boton_cerrar.pack(padx=20, pady=10)
         ventana_error.mainloop()
 
