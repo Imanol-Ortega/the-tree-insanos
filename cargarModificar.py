@@ -110,6 +110,8 @@ def ventana_Carga_Modificacion(menu):
     cargarModificar = Tk()
     frm = ttk.Frame(cargarModificar, padding=10)
     cargarModificar.title("Cargar y Modificar")
+    cargarModificar.resizable(0, 0)
+    cargarModificar.protocol("WM_DELETE_WINDOW", cargarModificar)
 
     # ?  Título
     frm.grid()
