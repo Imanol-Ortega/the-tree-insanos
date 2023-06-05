@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import *
 from tkinter import ttk
 import mysql.connector
-
+import customtkinter as ctk
 
 def retornar_Menu(cargarModificar, menu):
     cargarModificar.withdraw()
@@ -111,7 +111,10 @@ def ventana_Carga_Modificacion(menu):
     frm = ttk.Frame(cargarModificar, padding=10)
     cargarModificar.title("Cargar y Modificar")
 
-    # ?  Título
+    estiloMarco = ttk.Style()
+    estiloMarco.configure('fondo.TFrame', background='#202123')
+    frm = ttk.Frame(cargarModificar, padding=10, style='fondo.TFrame')
+
     frm.grid()
 
     # ?  Descripción y su respectiva caja de texto
@@ -146,5 +149,6 @@ def ventana_Carga_Modificacion(menu):
                rowspan=8, pady=10, sticky="nsew")
     tabla.bind("<<TreeviewSelect>>", seleccion_Tabla)
     cargar_tabla()
-    #!  IMANOL SI ESTÁS LEYENDO ESTO ES PORQUE ESTAS MOVIENDO COSAS, NO MUEVAS MIS COSAS CARAJO!!!!!!!!!!!!!!! NOTA DE IMANOL: EL MAINLOOP DE UN TOPLEVEL NO HACE FALTA XD
+    #!  IMANOL SI ESTÁS LEYENDO ESTO ES PORQUE ESTAS MOVIENDO COSAS, NO MUEVAS MIS COSAS CARAJO!!!!!!!!!!!!!!! 
+    #NOTA DE IMANOL: EL MAINLOOP DE UN TOPLEVEL NO HACE FALTA XD
     #!!!       https://youtube.com/shorts/GsKhI30n3zA?feature=share
