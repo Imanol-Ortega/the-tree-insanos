@@ -12,7 +12,7 @@ def retornar_Menu(huespedes, menu):
 
 def ventana_huespedes(menu):
     root_tk = tk.Toplevel()
-    root_tk.geometry("1200x600")
+    root_tk.geometry("1000x550")
     root_tk.title("Huespedes")
     root_tk.config(bg="#000")
     root_tk.resizable(0, 0)

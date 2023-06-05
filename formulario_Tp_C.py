@@ -38,6 +38,7 @@ def ventana_Formulario_TP(menu):
         combo['values'] += tuple(list(datos.keys()))
 
     def seleccioncombo(event):
+        mycursor = mydb.cursor()
         llaveselecionada = combo.get()
         seleccionado = datos.get(llaveselecionada)
         print(seleccionado)
@@ -58,6 +59,7 @@ def ventana_Formulario_TP(menu):
         combo.current(0)
 
     def cargar_tabla2():
+        mycursor = mydb.cursor()
         mycursor.execute(
             "SELECT NuHabitacion, Tipo, SUM(Dias),SUM(Total) FROM cliente WHERE Estado=2 GROUP BY Tipo ")
         fi = mycursor.fetchall()
@@ -69,10 +71,10 @@ def ventana_Formulario_TP(menu):
         master=ventana, text="Tipo de habitación", width=120, height=30, text_color="#fff", font=("Arial", 18))
     etiqueta.grid(column=0, row=2)
     button = customtkinter.CTkButton(
-        master=ventana, command=limpiar, text="Limpiar", corner_radius=10, font=("Arial", 16), fg_color="#cc1919")
+        master=ventana, command=limpiar, text="Limpiar", corner_radius=10, font=("Arial", 16), fg_color="#cc1919", hover_color="#cc3819")
     button.grid(column=2, row=2)
     button_Salir = customtkinter.CTkButton(master=ventana, command=lambda: retornar_Menu(
-        ventana, menu), text="Atras", corner_radius=10, font=("Arial", 16), fg_color="#cc1919")
+        ventana, menu), text="Atras", corner_radius=10, font=("Arial", 16), fg_color="#cc1919", hover_color="#cc3819")
     button_Salir.grid(column=2, row=1)
     combo = ttk.Combobox(ventana, state="reandoly")
     combo.bind("<<ComboboxSelected>>", seleccioncombo)
