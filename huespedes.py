@@ -95,15 +95,23 @@ def ventana_huespedes(menu):
                 mycursor.execute("SELECT Costo,Descuento FROM cliente WHERE id = %s", [
                                  item_selected1(True)[0]])
                 datos = mycursor.fetchall()
-                subtotal = int(cajaDias.get())*int(datos[0][0])
-                total = subtotal - (subtotal*(int(datos[0][1])/100))
-                mycursor.execute("UPDATE cliente SET Dias = %s,Subtotal = %s,Total = %s WHERE id = %s",
+                try:
+                    subtotal = int(cajaDias.get())*int(datos[0][0])
+                    total = subtotal - (subtotal*(int(datos[0][1])/100))
+                
+                    mycursor.execute("UPDATE cliente SET Dias = %s,Subtotal = %s,Total = %s WHERE id = %s",
                                  (int(cajaDias.get()), subtotal, int(total), item_selected1(True)[0]))
-                mydb.commit()
-                for i in tree.get_children():
-                    tree.delete(i)
-                cargar_tabla1(
-                    '', "SELECT id,NuHabitacion,Tipo,Costo,Dias,SubTotal,Descuento,Total FROM cliente WHERE Estado = 1 AND NuHabitacion LIKE")
+                    mydb.commit()
+                    for i in tree.get_children():
+                        tree.delete(i)
+                    cargar_tabla1(
+                        '', "SELECT id,NuHabitacion,Tipo,Costo,Dias,SubTotal,Descuento,Total FROM cliente WHERE Estado = 1 AND NuHabitacion LIKE")
+                    labelDias.configure(foreground="#fff")
+                except ValueError:
+                    labelDias.configure(foreground="red")
+                    messagebox.showerror(
+                        "ERROR", "Porfavor reingrese el dia")
+                
         except TypeError:
             messagebox.showerror(
                 "ERROR", "Porfavor seleccione el elemento a modificar")
