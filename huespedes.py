@@ -95,11 +95,16 @@ def ventana_huespedes(menu):
                 mycursor.execute("SELECT Costo,Descuento FROM cliente WHERE id = %s", [
                                  item_selected1(True)[0]])
                 datos = mycursor.fetchall()
-                subtotal = int(cajaDias.get())*int(datos[0][0])
-                total = subtotal - (subtotal*(int(datos[0][1])/100))
-                mycursor.execute("UPDATE cliente SET Dias = %s,Subtotal = %s,Total = %s WHERE id = %s",
+                try:
+                    subtotal = int(cajaDias.get())*int(datos[0][0])
+                    total = subtotal - (subtotal*(int(datos[0][1])/100))
+                
+                    mycursor.execute("UPDATE cliente SET Dias = %s,Subtotal = %s,Total = %s WHERE id = %s",
                                  (int(cajaDias.get()), subtotal, int(total), item_selected1(True)[0]))
-                mydb.commit()
+                    mydb.commit()
+                except ValueError:
+                    messagebox.showerror(
+                        "ERROR", "Porfavor reingrese el dia")
                 for i in tree.get_children():
                     tree.delete(i)
                 cargar_tabla1(
