@@ -28,6 +28,14 @@ def ventana_Carga_Modificacion(menu):
             ventana_error.title("Exito")
             mensaje_error = ttk.Label(
                 ventana_error, text="La modificación se ha realizado con éxito")
+        if (a == 4):
+            ventana_error.title("Error")
+            mensaje_error = ttk.Label(
+                ventana_error, text="Error en el tipo de dato ingresado")
+        if (a == 5):
+            ventana_error.title("Exito")
+            mensaje_error = ttk.Label(
+                ventana_error, text="Se ha guardado con éxito")
         mensaje_error.pack(padx=20, pady=20)
         # ? Botón de cerrar ventana de aviso
         boton_cerrar = ttk.Button(ventana_error, 
@@ -46,23 +54,28 @@ def ventana_Carga_Modificacion(menu):
             database="hotel"
         )
         mycursor = mydb.cursor()
-        #*  Tomo el contenido de la caja_Descripción ingresada por el usuario y realizo una consulta SELECT
-        consulta = "SELECT * FROM tipo WHERE descripcion = %s"
-        descripcion = caja_Descripcion.get()
-        mycursor.execute(consulta, (descripcion,))
-        resultado = mycursor.fetchall()
-        #*  Pregunto si hay una coincidencia en la tabla "tipo" para determinar si se está intentando ingresar 2 veces el mismo tipo de habitación
-        if not resultado:
-        #*  En caso de que no encuentre coincidencias, realiza un INSERT de los valores ingresados
-            consulta = "INSERT INTO tipo (descripcion, costo) VALUES(%s, %s)"
-            costo = int(caja_Costo.get())
-            mycursor.execute(consulta, (descripcion, costo))
-            mydb.commit()
-            #*  Se llama a la función a actualizar tabla
-            actualizar_tabla()
-        else:
-            #*  Se llama a la función ventana Error y se le envía el valor 1 para imprimir el mensaje correspondiente
-            ventana_Error(1)
+        try:
+            #*  Tomo el contenido de la caja_Descripción ingresada por el usuario y realizo una consulta SELECT
+            consulta = "SELECT * FROM tipo WHERE descripcion = %s"
+            descripcion = caja_Descripcion.get()
+            mycursor.execute(consulta, (descripcion,))
+            resultado = mycursor.fetchall()
+            #*  Pregunto si hay una coincidencia en la tabla "tipo" para determinar si se está intentando ingresar 2 veces el mismo tipo de habitación
+            if not resultado:
+            #*  En caso de que no encuentre coincidencias, realiza un INSERT de los valores ingresados
+                consulta = "INSERT INTO tipo (descripcion, costo) VALUES(%s, %s)"
+                costo = int(caja_Costo.get())
+                mycursor.execute(consulta, (descripcion, costo))
+                mydb.commit()
+                #*  Se llama a la función a actualizar tabla
+                actualizar_tabla()
+                #*  Se utiliza la función ventana_Error para informar que se guardó con éxito
+                ventana_Error(5)
+            else:
+                #*  Se llama a la función ventana Error y se le envía el valor 1 para imprimir el mensaje correspondiente
+                ventana_Error(1)
+        except ValueError:
+            ventana_Error(4)
 
     def modificar_Habitacion():
         #*  Se conecta a la base de datos
@@ -80,16 +93,21 @@ def ventana_Carga_Modificacion(menu):
 
         resultado = mycursor.fetchall()
         #*  Si no encuentra coincidencias se imprime un mensaje de error
-        if not resultado:
-            ventana_Error(2)
-        #*  Si encuentra coincidencias, actualiza el tipo de habitación
-        else:
-            consulta = "UPDATE tipo SET costo=%s WHERE descripcion=%s"
-            costo = int(caja_Costo.get())
-            mycursor.execute(consulta, (costo, descripcion))
-            mydb.commit()
-            #*  Se actualiza la tabla
-            actualizar_tabla()
+        try:
+            if not resultado:
+                ventana_Error(2)
+            #*  Si encuentra coincidencias, actualiza el tipo de habitación
+            else:
+                consulta = "UPDATE tipo SET costo=%s WHERE descripcion=%s"
+                costo = int(caja_Costo.get())
+                mycursor.execute(consulta, (costo, descripcion))
+                mydb.commit()
+                #*  Se utiliza la función ventana_Error para informar que se realizó un update
+                ventana_Error(3)
+                #*  Se actualiza la tabla
+                actualizar_tabla()
+        except ValueError:
+            ventana_Error(4)
 
     def actualizar_tabla():
         #*  Se utiliza un for para recorrer la tabla e ir borrandola en la posición correspondiente
@@ -99,8 +117,6 @@ def ventana_Carga_Modificacion(menu):
         cargar_tabla()
         #*  Se llama a la función limpiar entry
         limpiar_Entrys()
-        #*  Se utiliza la función ventana_Error para informar que se realizó un update
-        ventana_Error(3)
 
     def cargar_tabla():
         #*  Se accede a la base de datos
