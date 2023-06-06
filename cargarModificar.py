@@ -107,50 +107,116 @@ def ventana_Carga_Modificacion(menu):
         caja_Costo.delete(0, tk.END)
         caja_Descripcion.delete(0, tk.END)
 
-    cargarModificar = Tk()
-    frm = ttk.Frame(cargarModificar, padding=10)
+    cargarModificar = tk.Tk()
     cargarModificar.title("Cargar y Modificar")
+    cargarModificar.geometry("600x300")
+    cargarModificar.config(background="#202123")
     cargarModificar.resizable(0, 0)
     cargarModificar.protocol("WM_DELETE_WINDOW", cargarModificar)
 
-    estiloMarco = ttk.Style()
-    estiloMarco.configure('fondo.TFrame', background='#202123')
-    frm = ttk.Frame(cargarModificar, padding=10, style='fondo.TFrame')
+    
 
-    frm.grid()
 
     # ?  Descripción y su respectiva caja de texto
-    titulo = ttk.Label(frm, text="Descripción").grid(
-        column=1, row=3, columnspan=2)
-    caja_Descripcion = ttk.Entry(frm)
-    caja_Descripcion.grid(column=1, row=4, padx=20,
-                          pady=20, sticky="nsew", columnspan=2)
+    #Think fast chukklenuts
+    #blank = ttk.Label(cargarModificar, text="blank")
+    #blank.grid(column=1,row=1,columnspan=2)
+    #blank.configure(background="#202123",foreground="#202123")
+    
+    titulo = ttk.Label(cargarModificar, 
+                       text="Descripción")
+    titulo.grid(column=1,
+                row=3,
+                pady= 5,
+                columnspan=2)
+    titulo.configure(font=("Helvetica", 12, "bold"),
+                     background="#202123",
+                     foreground="#fff")
+    caja_Descripcion = ttk.Entry(cargarModificar)
+    caja_Descripcion.grid(column=1, 
+                          row=4, 
+                          padx=20,
+                          pady=10, 
+                          sticky="nsew", 
+                          columnspan=2)
 
     # ?  Costo y su respectiva caja de texto
-    ttk.Label(frm, text="Costo").grid(column=1, row=5, columnspan=2)
-    caja_Costo = ttk.Entry(frm)
-    caja_Costo.grid(column=1, row=6, padx=20, pady=20,
-                    columnspan=2, sticky="nsew")
+    label_Costo = ttk.Label(cargarModificar,
+                            text="Costo")
+    label_Costo.configure(font=("Helvetica", 12, "bold"),
+                     background="#202123",
+                     foreground="#fff")
+    label_Costo.grid(column=1,
+                     row=5,
+                     pady=5,
+                     columnspan=2)
+    caja_Costo = ttk.Entry(cargarModificar)
+    caja_Costo.grid(column=1, 
+                    row=6,
+                    padx=20, 
+                    pady=10,
+                    columnspan=2,
+                    sticky="nsew")
 
     # ?  Botones para guardar
-    ttk.Button(frm, text="Guardar", command=guardar_Habitacion).grid(
-        column=1, row=7, columnspan=2, padx=20, pady=20, sticky="nsew")
+    boton_Guardar = ctk.CTkButton(cargarModificar, 
+                                  text="Guardar",
+                                    corner_radius=0,
+                                    font=("Helvetica", 12, "bold"),
+                                    text_color="#fff",
+                                    fg_color="#343541",
+                                    hover_color="#444654",
+                                  command=guardar_Habitacion)
+    boton_Guardar.grid(column=1, 
+                       row=7, 
+                       columnspan=2, 
+                       padx=20, 
+                       pady=10, 
+                       sticky="nsew")
     # ?  Y modificar
-    ttk.Button(frm, text="Modificar", command=modificar_Habitacion).grid(
-        column=1, row=8, columnspan=2, padx=20, pady=20, sticky="nsew")
+    boton_Modificar = ctk.CTkButton(cargarModificar, 
+                                    text="Modificar",
+                                    corner_radius=0,
+                                    font=("Helvetica", 12, "bold"),
+                                    text_color="#fff",
+                                    fg_color="#343541",
+                                    hover_color="#444654", 
+                                    command=modificar_Habitacion)
+    boton_Modificar.grid(column=1, 
+                         row=8, 
+                         columnspan=2, 
+                         padx=20, 
+                         pady=10, 
+                         sticky="nsew")
     # ?  salir/retroceder
-    ttk.Button(frm, text="Atras", command=lambda: retornar_Menu(cargarModificar, menu)).grid(
-        column=1, row=9, padx=20, pady=20, sticky="nsew", columnspan=2)
+    boton_Salir = ctk.CTkButton(cargarModificar, 
+                                text="Atras",
+                                corner_radius=0,
+                                font=("Helvetica", 12, "bold"),
+                                text_color="#fff",
+                                fg_color="#343541",
+                                hover_color="#444654",
+                                command=lambda: retornar_Menu(cargarModificar, menu))
+    boton_Salir.grid(column=1, 
+                     row=9, 
+                     padx=20, 
+                     pady=10, 
+                     sticky="nsew", 
+                     columnspan=2)
 
     #!  SI MUEVEN ESTAS COSAS DE LA TABLA DE LUGAR PETA, NO TOCAR XD
     columns = ('descripcion', 'costo')
-    tabla = ttk.Treeview(frm, columns=columns, show='headings')
+    tabla = ttk.Treeview(cargarModificar, columns=columns, show='headings', style="estiloArboreo.Treeview")
     tabla.heading('descripcion', text='Descripcion')
     tabla.heading('costo', text='Costo')
-    tabla.grid(row=10, column=1, columnspan=2, padx=10,
+    tabla.grid(row=1, column=10, columnspan=2, padx=10,
                rowspan=8, pady=10, sticky="nsew")
     tabla.bind("<<TreeviewSelect>>", seleccion_Tabla)
+
+
+
     cargar_tabla()
-    #!  IMANOL SI ESTÁS LEYENDO ESTO ES PORQUE ESTAS MOVIENDO COSAS, NO MUEVAS MIS COSAS CARAJO!!!!!!!!!!!!!!! 
-    #NOTA DE IMANOL: EL MAINLOOP DE UN TOPLEVEL NO HACE FALTA XD
+    #!  IMANOL SI ESTÁS LEYENDO ESTO ES PORQUE ESTAS MOVIENDO COSAS, NO MUEVAS MIS COSAS CARAJO!!!!!!!!!!!!!!
+    #! NOTA DE IMANOL: EL MAINLOOP DE UN TOPLEVEL NO HACE FALTA XD
+    #?  Eddie: Ah... xD
     #!!!       https://youtube.com/shorts/GsKhI30n3zA?feature=share
