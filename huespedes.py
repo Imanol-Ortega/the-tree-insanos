@@ -62,6 +62,8 @@ def ventana_huespedes(menu):
                              (Numero, tipo[0], tipo[1], dias, subtotal, descuento*100, total, 1))
             mydb.commit()
             limpiar()
+        else:
+            messagebox.showinfo("Advertencia","Ingrese todos los datos")
 
     def limpiar():
         cajaDias.delete(0, tk.END)
