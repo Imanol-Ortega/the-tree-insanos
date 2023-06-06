@@ -14,7 +14,7 @@ def ventana_huespedes(menu):
     root_tk = tk.Toplevel()
     root_tk.geometry("1000x550")
     root_tk.title("Huespedes")
-    root_tk.config(bg="#000")
+    root_tk.config(bg="#333")
     root_tk.resizable(0, 0)
     root_tk.protocol("WM_DELETE_WINDOW", root_tk)
     mydb = mysql.connector.connect(
@@ -140,11 +140,23 @@ def ventana_huespedes(menu):
             record = item['values']
         return record
 
+    def mouseOver(event):
+        tree = event.widget
+        item = tree.identify_row(event.y)
+        tree.tk.call(tree, "tag", "remove", "highlight")
+        tree.tk.call(tree, "tag", "add", "highlight", item)
+
+    def mouseOver2(event):
+        tree2 = event.widget
+        item = tree2.identify_row(event.y)
+        tree2.tk.call(tree2, "tag", "remove", "highlight")
+        tree2.tk.call(tree2, "tag", "add", "highlight", item)
+
     labelHabitacion = ttk.Label(root_tk, text="Nro Habitacion",
-                                background="#000", foreground="#fff")
+                                background="#333", foreground="#fff")
     labelHabitacion.place(x=30, y=20, width=120, height=30)
     labelDias = ttk.Label(root_tk, text="Dias de Estadia",
-                          background="#000", foreground="#fff")
+                          background="#333", foreground="#fff")
     labelDias.grid(column=0, row=3)
     cajaHabitacion = customtkinter.CTkEntry(
         master=root_tk, width=120, height=25)
@@ -154,31 +166,38 @@ def ventana_huespedes(menu):
     cajaDias.grid(column=1, row=3)
     radio_var = tk.IntVar(value=0)
     credito = customtkinter.CTkRadioButton(
-        master=root_tk, text="Credito", variable=radio_var, value=1)
+        master=root_tk, text="Credito", variable=radio_var, value=1, fg_color="#fff", hover_color="#fff")
     credito.grid(row=4, column=1, pady=10)
     contado = customtkinter.CTkRadioButton(
-        master=root_tk, text="Contado", variable=radio_var, value=2)
+        master=root_tk, text="Contado", variable=radio_var, value=2, fg_color="#fff", hover_color="#fff")
     contado.grid(row=5, column=1, pady=10)
     buttonLimpiar = customtkinter.CTkButton(
-        master=root_tk, corner_radius=10, text="Limpiar", command=limpiar)
+        master=root_tk, corner_radius=10, text="Limpiar", command=limpiar, hover_color="#BFD9E1", fg_color="#638EA7", text_color="#072349")
     buttonGuardar = customtkinter.CTkButton(
-        master=root_tk, corner_radius=10, text="Guardar", command=guardar)
+        master=root_tk, corner_radius=10, text="Guardar", command=guardar, hover_color="#BFD9E1", fg_color="#638EA7", text_color="#072349")
     buttonBorrar = customtkinter.CTkButton(
-        master=root_tk, corner_radius=10, text="Borrar", command=borrar)
+        master=root_tk, corner_radius=10, text="Borrar", command=borrar, hover_color="#BFD9E1", fg_color="#638EA7", text_color="#072349")
     buttonModificar = customtkinter.CTkButton(
-        master=root_tk, corner_radius=10, text="Modificar", command=modificar)
+        master=root_tk, corner_radius=10, text="Modificar", command=modificar, hover_color="#BFD9E1", fg_color="#638EA7", text_color="#072349")
     buttonSalir = customtkinter.CTkButton(
-        master=root_tk, corner_radius=10, text="Atras", command=lambda: retornar_Menu(root_tk, menu))
+        master=root_tk, corner_radius=10, text="Atras", command=lambda: retornar_Menu(root_tk, menu), hover_color="#BFD9E1", fg_color="#638EA7", text_color="#072349")
     buttonLimpiar.grid(column=0, row=6, padx=5, pady=5)
     buttonGuardar.grid(column=1, row=6, padx=5, pady=5)
     buttonBorrar.grid(column=0, row=7, padx=5, pady=5)
     buttonModificar.grid(column=1, row=7, padx=5, pady=5)
     buttonSalir.grid(column=1, row=8, padx=5, pady=5)
 
+    style = ttk.Style()
+    style.theme_use("default")
+    style.configure("Treeview", background="#FDF6DE",
+                    foreground="#000", fieldbackground="#FDF6DE", hovercolor="#fff")
+    style.map('Treeview', background=[('selected', '#999')])
+
     # TABLA PARA MOSTRAR RESERVACION
     columns1 = ('Id', 'Numero', 'Tipo', 'Costo', 'Dias',
                 'SubTotal', 'Descuento', 'Total')
     tree = ttk.Treeview(root_tk, columns=columns1, show='headings')
+    tree.tag_configure('highlight', background="#fff")
     tree.heading('Id', text='Id')
     tree.heading('Numero', text='Numero')
     tree.heading('Tipo', text='Tipo')
@@ -197,16 +216,19 @@ def ventana_huespedes(menu):
     tree.column('Total', width=100, anchor='w')
     tree.grid(row=0, column=3, pady=40)
     tree.bind('<<TreeviewSelect>>', item_selected1)
+    tree.bind('<Motion>', mouseOver)
 
     # TABLA PARA MOSTRAR TIPO HABITACION
     columns2 = ('Descripcion', 'Costo')
     tree2 = ttk.Treeview(root_tk, columns=columns2, show='headings')
+    tree2.tag_configure('highlight', background="#fff")
     tree2.heading('Descripcion', text='Tipo Habitacion')
     tree2.heading('Costo', text='Precio')
     tree2.column('Descripcion', width=120, anchor='w')
     tree2.column('Costo', width=100, anchor='w')
     tree2.place(x=30, y=55)
     tree2.bind('<<TreeviewSelect>>', item_selected2)
+    tree2.bind('<Motion>', mouseOver2)
 
     cargar_tabla1(
         '', "SELECT id,NuHabitacion,Tipo,Costo,Dias,SubTotal,Descuento,Total FROM cliente WHERE Estado = 1 AND NuHabitacion LIKE")
