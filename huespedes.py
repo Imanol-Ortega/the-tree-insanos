@@ -102,13 +102,16 @@ def ventana_huespedes(menu):
                     mycursor.execute("UPDATE cliente SET Dias = %s,Subtotal = %s,Total = %s WHERE id = %s",
                                  (int(cajaDias.get()), subtotal, int(total), item_selected1(True)[0]))
                     mydb.commit()
+                    for i in tree.get_children():
+                        tree.delete(i)
+                    cargar_tabla1(
+                        '', "SELECT id,NuHabitacion,Tipo,Costo,Dias,SubTotal,Descuento,Total FROM cliente WHERE Estado = 1 AND NuHabitacion LIKE")
+                    labelDias.configure(foreground="#fff")
                 except ValueError:
+                    labelDias.configure(foreground="red")
                     messagebox.showerror(
                         "ERROR", "Porfavor reingrese el dia")
-                for i in tree.get_children():
-                    tree.delete(i)
-                cargar_tabla1(
-                    '', "SELECT id,NuHabitacion,Tipo,Costo,Dias,SubTotal,Descuento,Total FROM cliente WHERE Estado = 1 AND NuHabitacion LIKE")
+                
         except TypeError:
             messagebox.showerror(
                 "ERROR", "Porfavor seleccione el elemento a modificar")
