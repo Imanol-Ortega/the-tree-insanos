@@ -117,7 +117,17 @@ def ventana_huespedes(menu):
         except TypeError:
             messagebox.showerror(
                 "ERROR", "Porfavor seleccione el elemento a modificar")
-
+    def finaliza():
+        try:
+            if item_selected1(True)[0]:
+                mycursor.execute("UPDATE cliente SET Estado = 2 WHERE id = %s",[item_selected1(True)[0]])
+                mydb.commit()
+                for i in tree.get_children():
+                        tree.delete(i)
+                cargar_tabla1('',"SELECT id,NuHabitacion,Tipo,Costo,Dias,SubTotal,Descuento,Total FROM cliente WHERE Estado = 1 AND NuHabitacion LIKE")
+        except TypeError:
+             messagebox.showerror(
+                "ERROR", "Porfavor seleccione el elemento a finalizar")
     def cargar_tabla1(tecla, sql):
         mycursor.execute(sql+"%s", ['%'+tecla+'%'])
         filas = mycursor.fetchall()
@@ -189,6 +199,8 @@ def ventana_huespedes(menu):
         master=root_tk, corner_radius=10, text="Borrar", command=borrar, hover_color="#BFD9E1", fg_color="#638EA7", text_color="#072349")
     buttonModificar = customtkinter.CTkButton(
         master=root_tk, corner_radius=10, text="Modificar", command=modificar, hover_color="#BFD9E1", fg_color="#638EA7", text_color="#072349")
+    buttonFinalizar = customtkinter.CTkButton(
+        master=root_tk, corner_radius=10, text="Finalizar", command=finaliza, hover_color="#BFD9E1", fg_color="#638EA7", text_color="#072349")
     buttonSalir = customtkinter.CTkButton(
         master=root_tk, corner_radius=10, text="Atras", command=lambda: retornar_Menu(root_tk, menu), hover_color="#BFD9E1", fg_color="#638EA7", text_color="#072349")
     buttonLimpiar.grid(column=0, row=6, padx=5, pady=5)
@@ -196,6 +208,7 @@ def ventana_huespedes(menu):
     buttonBorrar.grid(column=0, row=7, padx=5, pady=5)
     buttonModificar.grid(column=1, row=7, padx=5, pady=5)
     buttonSalir.grid(column=1, row=8, padx=5, pady=5)
+    buttonFinalizar.grid(column=0,row=8,padx=5,pady=5)
 
     style = ttk.Style()
     style.theme_use("default")
